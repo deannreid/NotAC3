@@ -1,0 +1,87 @@
+name: CodeQL
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect_languages:
+    name: Detect supported languages
+    runs-on: ubuntu-latest
+    outputs:
+      languages: ${{ steps.detect.outputs.languages }}
+      has_languages: ${{ steps.detect.outputs.has_languages }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Detect source files
+        id: detect
+        shell: bash
+        run: |
+          languages=()
+
+          if find . -type f -name '*.py' -not -path './.git/*' -print -quit | grep -q .; then
+            languages+=("python")
+          fi
+
+          if find . -type f \
+            \( -name '*.js' -o -name '*.jsx' -o -name '*.mjs' -o -name '*.cjs' \
+               -o -name '*.ts' -o -name '*.tsx' \) \
+            -not -path './.git/*' -print -quit | grep -q .; then
+            languages+=("javascript-typescript")
+          fi
+
+          if (( ${#languages[@]} == 0 )); then
+            echo 'languages=[]' >> "$GITHUB_OUTPUT"
+            echo 'has_languages=false' >> "$GITHUB_OUTPUT"
+          else
+            joined=$(printf ',"%s"' "${languages[@]}")
+            echo "languages=[${joined:1}]" >> "$GITHUB_OUTPUT"
+            echo 'has_languages=true' >> "$GITHUB_OUTPUT"
+          fi
+
+  analyze:
+    name: Analyze ${{ matrix.language }}
+    needs: detect_languages
+    if: needs.detect_languages.outputs.has_languages == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(needs.detect_languages.outputs.languages) }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+          queries: security-extended
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:${{ matrix.language }}
