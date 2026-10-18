@@ -1,0 +1,110 @@
+name: Bug report
+description: Report something that is broken or behaving unexpectedly
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        Please do not include credentials, private keys, tokens, payloads, target data, collected material, or live infrastructure details. Replace sensitive values with safe examples.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and did not find the same bug.
+          required: true
+        - label: I removed or replaced all sensitive and identifying information.
+          required: true
+        - label: This report relates to authorised security research or a controlled lab.
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: NAC3 version
+      description: Use the release or tag where you saw the problem.
+      placeholder: "For example: 4.0 or NAC3-v4.13.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      description: Select the part of NAC3 that best matches the problem.
+      options:
+        - Web UI
+        - API or server
+        - Listener or communications
+        - Agent or payload
+        - Builder or compiler
+        - Relay or infrastructure
+        - Operator CLI
+        - Plugin or integration
+        - Packaging or installation
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Linux
+        - Windows
+        - macOS
+        - Multiple platforms
+        - Not platform-specific
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the problem and its impact.
+      placeholder: Tell us what went wrong.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Give the smallest repeatable example you can.
+      placeholder: |
+        1. Open...
+        2. Configure...
+        3. Run...
+        4. See the error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      placeholder: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or output
+      description: Paste only the minimum useful output and redact all sensitive values.
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add screenshots, configuration examples, or other useful context after removing sensitive information.

@@ -1,0 +1,78 @@
+name: Feature request
+description: Suggest an improvement or a new capability for NAC3
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        Describe the problem first, then explain the change you would like to see. Do not include credentials, target data, or live infrastructure details.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and did not find the same request.
+          required: true
+        - label: This request is intended for authorised security research or controlled lab use.
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Web UI
+        - API or server
+        - Listener or communications
+        - Agent or payload
+        - Builder or compiler
+        - Relay or infrastructure
+        - Operator CLI
+        - Plugin or integration
+        - Packaging or installation
+        - Documentation
+        - New module
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Explain the limitation or workflow problem behind the request.
+      placeholder: It is currently difficult to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe how you think the feature should work from an operator's point of view.
+      placeholder: I would like NAC3 to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Example use case
+      description: Give a safe, non-sensitive example from an authorised lab or engagement workflow.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Note any current workaround or alternative design you have considered.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add mock-ups, references, or other information that would help explain the request.
