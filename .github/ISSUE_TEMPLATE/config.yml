@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability
-    url: https://github.com/deannreid/NotAC3/security
-    about: Please do not disclose security vulnerabilities in a public issue.
+    url: https://github.com/deannreid/NotAC3/security/advisories/new
+    about: Submit a private security report. Do not disclose vulnerabilities in a public issue.
